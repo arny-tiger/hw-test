@@ -34,7 +34,7 @@ func sortByFrequency(wordsCount map[string]int) []string {
 		return false
 	})
 	if len(keys) > 10 {
-		return keys[0:10]
+		return keys[:10]
 	}
 	return keys
 }
