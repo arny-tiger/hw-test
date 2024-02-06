@@ -2,39 +2,49 @@ package main
 
 import (
 	"context"
+	"errors"
 	"flag"
+	"fmt"
+	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
-	"time"
 
 	"github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/app"
+	internalconfig "github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/config"
 	"github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/logger"
 	internalhttp "github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/server/http"
+	iStorage "github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/storage"
 	memorystorage "github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/storage/memory"
+	sqlstorage "github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/storage/sql"
 )
 
 var configFile string
 
 func init() {
-	flag.StringVar(&configFile, "config", "/etc/calendar/config.toml", "Path to configuration file")
+	flag.StringVar(
+		&configFile,
+		"config",
+		"./configs/config.yaml",
+		"Path to configuration file",
+	)
 }
 
 func main() {
 	flag.Parse()
 
-	if flag.Arg(0) == "version" {
-		printVersion()
+	config := internalconfig.NewConfig(configFile)
+	logg := logger.New(config.Logger.Level)
+	storage, storageErr := createStorage(config)
+	if storageErr != nil {
+		logg.Error(storageErr.Error())
 		return
 	}
 
-	config := NewConfig()
-	logg := logger.New(config.Logger.Level)
+	calendar := app.New(config, logg, storage)
+	fmt.Print(calendar)
 
-	storage := memorystorage.New()
-	calendar := app.New(logg, storage)
-
-	server := internalhttp.NewServer(logg, calendar)
+	server := internalhttp.NewServer(calendar.Config, calendar.Logger)
 
 	ctx, cancel := signal.NotifyContext(context.Background(),
 		syscall.SIGINT, syscall.SIGTERM, syscall.SIGHUP)
@@ -42,20 +52,29 @@ func main() {
 
 	go func() {
 		<-ctx.Done()
-
-		ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
-		defer cancel()
-
-		if err := server.Stop(ctx); err != nil {
+		if err := server.Stop(); err != nil {
 			logg.Error("failed to stop http server: " + err.Error())
 		}
 	}()
 
 	logg.Info("calendar is running...")
 
-	if err := server.Start(ctx); err != nil {
+	err := server.Start()
+	if err != nil && !errors.Is(err, http.ErrServerClosed) {
 		logg.Error("failed to start http server: " + err.Error())
 		cancel()
 		os.Exit(1) //nolint:gocritic
 	}
+}
+
+func createStorage(config internalconfig.Config) (iStorage.Storage, error) {
+	if config.DB.Type == iStorage.SQLStorageType {
+		sqlStorage, storageErr := sqlstorage.New(config)
+		return sqlStorage, storageErr
+	}
+	if config.DB.Type == iStorage.MemoryStorageType {
+		memoryStorage := memorystorage.New()
+		return memoryStorage, nil
+	}
+	return nil, fmt.Errorf("wrong storage type")
 }
