@@ -1,6 +1,6 @@
 module github.com/fixme_my_friend/hw12_13_14_15_calendar
 
-go 1.19.13
+go 1.21.6
 
 require (
 	github.com/jmoiron/sqlx v1.3.5
