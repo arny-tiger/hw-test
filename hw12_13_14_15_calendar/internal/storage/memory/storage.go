@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/storage/entity"
+	"github.com/arny_tiger/hw-test/hw12_13_14_15_calendar/internal/storage/entity"
 )
 
 type Storage struct {

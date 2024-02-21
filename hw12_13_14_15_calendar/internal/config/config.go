@@ -45,12 +45,12 @@ func NewConfig(configPath string) Config {
 			viper.GetInt("server.port"),
 		},
 		DBConf{
-			viper.GetString("db.type"),
-			viper.GetString("db.host"),
-			viper.GetInt("db.port"),
-			viper.GetString("db.database"),
-			viper.GetString("db.username"),
-			viper.GetString("db.password"),
+			viper.GetString("storage.type"),
+			viper.GetString("storage.host"),
+			viper.GetInt("storage.port"),
+			viper.GetString("storage.database"),
+			viper.GetString("storage.username"),
+			viper.GetString("storage.password"),
 		},
 	}
 }

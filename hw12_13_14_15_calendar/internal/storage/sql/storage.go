@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/config"
-	"github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/storage/entity"
+	"github.com/arny_tiger/hw-test/hw12_13_14_15_calendar/internal/config"
+	"github.com/arny_tiger/hw-test/hw12_13_14_15_calendar/internal/storage/entity"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq" // postgres
 )

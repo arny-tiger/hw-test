@@ -3,9 +3,9 @@ package app
 import (
 	"context"
 
-	internalconfig "github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/config"
-	"github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/logger"
-	"github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/storage"
+	internalconfig "github.com/arny_tiger/hw-test/hw12_13_14_15_calendar/internal/config"
+	"github.com/arny_tiger/hw-test/hw12_13_14_15_calendar/internal/logger"
+	"github.com/arny_tiger/hw-test/hw12_13_14_15_calendar/internal/storage"
 )
 
 type App struct {

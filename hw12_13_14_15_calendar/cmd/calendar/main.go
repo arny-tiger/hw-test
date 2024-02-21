@@ -10,13 +10,13 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/app"
-	internalconfig "github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/config"
-	"github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/logger"
-	internalhttp "github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/server/http"
-	iStorage "github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/storage"
-	memorystorage "github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/storage/memory"
-	sqlstorage "github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/storage/sql"
+	"github.com/arny_tiger/hw-test/hw12_13_14_15_calendar/internal/app"
+	internalconfig "github.com/arny_tiger/hw-test/hw12_13_14_15_calendar/internal/config"
+	"github.com/arny_tiger/hw-test/hw12_13_14_15_calendar/internal/logger"
+	internalhttp "github.com/arny_tiger/hw-test/hw12_13_14_15_calendar/internal/server/http"
+	iStorage "github.com/arny_tiger/hw-test/hw12_13_14_15_calendar/internal/storage"
+	memorystorage "github.com/arny_tiger/hw-test/hw12_13_14_15_calendar/internal/storage/memory"
+	sqlstorage "github.com/arny_tiger/hw-test/hw12_13_14_15_calendar/internal/storage/sql"
 )
 
 var configFile string
