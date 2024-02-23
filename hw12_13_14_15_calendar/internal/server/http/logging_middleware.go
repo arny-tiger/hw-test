@@ -27,7 +27,7 @@ func loggingMiddleware(next http.Handler, logger logger.Logger) http.Handler {
 		host := r.RemoteAddr
 		currentTime := time.Now().Format("02/Jan/2006:15:04:05")
 		httpInfo := r.Method + " " + r.URL.Path + " " + r.Proto + " " + strconv.Itoa(rcw.responseCode)
-		latency, ok := r.Context().Value("latency").(time.Duration)
+		latency, ok := r.Context().Value(latencyContextKey("latency")).(time.Duration)
 		if !ok {
 			fmt.Print("Not found")
 			return
