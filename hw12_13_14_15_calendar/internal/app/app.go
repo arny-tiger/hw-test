@@ -2,21 +2,27 @@ package app
 
 import (
 	"context"
+
+	internalconfig "github.com/arny_tiger/hw-test/hw12_13_14_15_calendar/internal/config"
+	"github.com/arny_tiger/hw-test/hw12_13_14_15_calendar/internal/logger"
+	"github.com/arny_tiger/hw-test/hw12_13_14_15_calendar/internal/storage"
 )
 
-type App struct { // TODO
+type App struct {
+	Config  internalconfig.Config
+	Logger  logger.Logger
+	Storage storage.Storage
 }
 
-type Logger interface { // TODO
+func New(config internalconfig.Config, logger logger.Logger, storage storage.Storage) App {
+	return App{
+		config,
+		logger,
+		storage,
+	}
 }
 
-type Storage interface { // TODO
-}
-
-func New(logger Logger, storage Storage) *App {
-	return &App{}
-}
-
+//nolint:all
 func (a *App) CreateEvent(ctx context.Context, id, title string) error {
 	// TODO
 	return nil

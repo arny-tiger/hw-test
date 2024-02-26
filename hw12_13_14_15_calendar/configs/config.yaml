@@ -1,0 +1,14 @@
+logger:
+  level: "info"
+
+server:
+  host: "localhost"
+  port: "8080"
+
+storage:
+  type: "memory"
+  host:
+  port:
+  database:
+  username:
+  password:

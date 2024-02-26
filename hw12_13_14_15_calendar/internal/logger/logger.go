@@ -1,20 +1,42 @@
 package logger
 
-import "fmt"
+import (
+	"log/slog"
+	"os"
+)
 
-type Logger struct { // TODO
+type Logger interface {
+	Info(msg string)
+	Error(msg string)
 }
 
-func New(level string) *Logger {
-	return &Logger{}
+type slogLogger struct {
+	logger *slog.Logger
 }
 
-func (l Logger) Info(msg string) {
-	fmt.Println(msg)
+func New(level string) Logger {
+	levelByString := map[string]slog.Level{
+		"debug": slog.LevelDebug,
+		"info":  slog.LevelInfo,
+		"warn":  slog.LevelWarn,
+		"error": slog.LevelError,
+	}
+	loggerLevel, ok := levelByString[level]
+	if !ok {
+		panic("Wrong log level")
+	}
+	opts := &slog.HandlerOptions{
+		Level: loggerLevel,
+	}
+	return slogLogger{
+		slog.New(slog.NewTextHandler(os.Stdout, opts)),
+	}
 }
 
-func (l Logger) Error(msg string) {
-	// TODO
+func (l slogLogger) Info(msg string) {
+	l.logger.Info(msg)
 }
 
-// TODO
+func (l slogLogger) Error(msg string) {
+	l.logger.Error(msg)
+}
