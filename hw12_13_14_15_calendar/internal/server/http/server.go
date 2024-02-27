@@ -2,13 +2,14 @@ package internalhttp
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"strconv"
 	"time"
 
+	"github.com/arny_tiger/hw-test/hw12_13_14_15_calendar/api/rest/handler/event"
 	"github.com/arny_tiger/hw-test/hw12_13_14_15_calendar/internal/config"
 	"github.com/arny_tiger/hw-test/hw12_13_14_15_calendar/internal/logger"
+	"github.com/arny_tiger/hw-test/hw12_13_14_15_calendar/internal/storage"
 )
 
 type Server struct {
@@ -16,7 +17,7 @@ type Server struct {
 	logger     logger.Logger
 }
 
-func NewServer(config config.Config, logger logger.Logger) Server {
+func NewServer(config config.Config, logger logger.Logger, storage storage.Storage) Server {
 	httpServer := &http.Server{
 		Addr:         config.Host.Host + ":" + strconv.Itoa(config.Host.Port),
 		ReadTimeout:  5 * time.Second,
@@ -24,10 +25,8 @@ func NewServer(config config.Config, logger logger.Logger) Server {
 		IdleTimeout:  15 * time.Second,
 	}
 	mux := http.NewServeMux()
-	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, "Welcome to the home page!")
-	})
-	httpServer.Handler = latencyMiddleware(loggingMiddleware(mux, logger))
+	mux.HandleFunc("/event", event.NewHandler(storage, logger).GetDispatcher)
+	httpServer.Handler = loggingMiddleware(mux, logger)
 
 	return Server{
 		httpServer,

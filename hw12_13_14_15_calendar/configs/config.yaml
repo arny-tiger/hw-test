@@ -5,10 +5,14 @@ server:
   host: "localhost"
   port: "8080"
 
+grpc:
+  host: "localhost"
+  port: "50051"
+
 storage:
-  type: "memory"
-  host:
-  port:
-  database:
-  username:
-  password:
+  type: "sql"
+  host: "localhost"
+  port: "5432"
+  database: "calendar"
+  username: "calendar_user"
+  password: ""
