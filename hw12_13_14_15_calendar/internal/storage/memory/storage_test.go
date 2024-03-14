@@ -6,6 +6,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/arny_tiger/hw-test/hw12_13_14_15_calendar/internal/storage"
 	"github.com/arny_tiger/hw-test/hw12_13_14_15_calendar/internal/storage/entity"
 	"github.com/stretchr/testify/require"
 )
@@ -109,7 +110,7 @@ func TestDeleteEventConcurrent(t *testing.T) {
 			if err != nil {
 				_, ok := s.events[e.ID]
 				if !ok {
-					require.Error(t, &EventNotFoundErr{})
+					require.Error(t, &storage.EventNotFoundErr{})
 				}
 			}
 		}()
@@ -146,7 +147,7 @@ func TestGetEventsConcurrent(t *testing.T) {
 	for i := 0; i < requestsAmount; i++ {
 		go func() {
 			defer wg.Done()
-			events, err := s.GetEvents()
+			events, err := s.GetEvents(20, 0)
 			require.NoError(t, err)
 			require.ElementsMatch(t, events, []entity.Event{event1, event2})
 		}()

@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package event;
+
+option go_package = "./event";
+
+message Event {
+  int32 ID = 1;
+  string Title = 2;
+  string Date = 3;
+  string Duration = 4;
+  string Description = 5;
+  int32 OwnerID = 6;
+}
+
+service EventService {
+  rpc CreateEvent (CreateEventRequest) returns (CreateEventResponse);
+  rpc GetEvents (GetEventsRequest) returns (GetEventsResponse);
+  rpc UpdateEvent (UpdateEventRequest) returns (UpdateEventResponse);
+  rpc DeleteEvent (DeleteEventRequest) returns (DeleteEventResponse);
+}
+
+message CreateEventRequest {
+  Event event = 1;
+}
+message CreateEventResponse {
+  Event event = 1;
+}
+message GetEventsRequest {
+  int64 limit = 1;
+  int64 offset = 2;
+}
+message GetEventsResponse {
+  repeated Event events = 1;
+}
+message UpdateEventRequest {
+  Event event = 1;
+}
+message UpdateEventResponse {
+  Event event = 1;
+}
+message DeleteEventRequest {
+  int64 Id = 1;
+}
+message DeleteEventResponse {
+  int32 response_code = 1;
+}
+
+
+

@@ -9,6 +9,7 @@ import (
 type Config struct {
 	Logger LoggerConf
 	Host   HostConf
+	GRPC   GRPCConf
 	DB     DBConf
 }
 
@@ -17,6 +18,11 @@ type LoggerConf struct {
 }
 
 type HostConf struct {
+	Host string
+	Port int
+}
+
+type GRPCConf struct {
 	Host string
 	Port int
 }
@@ -43,6 +49,10 @@ func NewConfig(configPath string) Config {
 		HostConf{
 			viper.GetString("server.host"),
 			viper.GetInt("server.port"),
+		},
+		GRPCConf{
+			viper.GetString("grpc.host"),
+			viper.GetInt("grpc.port"),
 		},
 		DBConf{
 			viper.GetString("storage.type"),
